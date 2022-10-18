@@ -4,8 +4,6 @@ const fileUpload = require('express-fileupload');
 
 const { dbConnection } = require('../database/config');
 
-const { socketController } = require('../sockets/controller');
-
 class Server {
   constructor() {
     this.app = express();
@@ -35,6 +33,9 @@ class Server {
 
     // Rutas de mi aplicación
     this.routes();
+
+    //Sockets
+    this.sockets()
   }
 
   async conectarDB() {
@@ -75,16 +76,21 @@ class Server {
   }
 
   sockets() {
-    this.io.on('connection' () );
+    this.io.on('connection', socket => {
+      console.log('Cliente conectado', socket.id);
+
+      socket.on('disconnect', () => {
+        console.log('Cliente desconectado')
+      })
+    });
   }
     
   listen() {
-    this.app.listen(this.port, () => {
+    this.server.listen(this.port, () => {
       console.log("Servidor corriendo en puerto", this.port);
     });
   }
 }
-
 
 
 

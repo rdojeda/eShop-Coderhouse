@@ -1,13 +1,13 @@
-const { Ordenes } = require("../models/orden");
-const emailer = require("../helpers/emailer.js");
+const Orden = require("../models/orden");
+const emailer = require("../emailer/emailerOrden");
 
 //Cargar Nueva Orden 
 const nuevaOrden = async (req, res, next) => {
-    const orden = new Ordenes(req.body);
+    const orden = new Orden(req.body);
     try {
         await orden.save();
         //Envio de mail 
-        emailer.sendMailOrden(orden)        
+        emailer.sendMail(orden)        
         res.json({ mensaje: "Se agregó una nueva orden" })
         
     } catch (error) {
@@ -19,7 +19,7 @@ const nuevaOrden = async (req, res, next) => {
 //Mostrar todas las ordenes
 const mostrarOrdenes = async (req, res, next) => {
     try {
-        const ordenes = await Ordenes.find({}).populate('usuario').populate({
+        const ordenes = await Orden.find({}).populate('usuario').populate({
             path: 'orden.producto',
             model: 'Carrito'
         })
@@ -32,7 +32,7 @@ const mostrarOrdenes = async (req, res, next) => {
 
 //Mostrar una orden por su Id 
 const mostrarOrden = async (req, res, next) => {
-    const orden = await Ordenes.findById(req.params.idOrden).populate('usuario').populate({
+    const orden = await Orden.findById(req.params.idOrden).populate('usuario').populate({
         path: 'orden.producto',
         model: 'Carrito'
     })
@@ -49,7 +49,7 @@ const mostrarOrden = async (req, res, next) => {
 //Actualizar una Orden 
 const actualizarOrden = async (req, res, next) => {
     try {
-        let orden = await Ordenes.findOneAndUpdate(
+        let orden = await Orden.findOneAndUpdate(
           { _id: req.params.idOrden },
           req.body,
           { new: true }
@@ -71,7 +71,7 @@ const actualizarOrden = async (req, res, next) => {
 //Eliminar una Orden por su Id
 const eliminarOrden = async (req, res, next) => {
     try {
-        await Ordenes.findOneAndDelete({ _id: req.params.idOrden})
+        await Orden.findOneAndDelete({ _id: req.params.idOrden})
         res.jsons({ mensaje: "La orden ha sido eliminada" });
 
     } catch (error) {

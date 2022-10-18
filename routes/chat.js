@@ -1,5 +1,5 @@
  const { Router } = require("express");
-const { getMensaje, getMensajes, addMensaje } = require("../sockets/controller");
+const { getMensaje, getMensajes, addMensaje } = require("../controllers/chat");
 
  const router = Router();
 

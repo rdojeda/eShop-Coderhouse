@@ -7,15 +7,20 @@ const CarritoSchema = Schema(
         producto: {
           type: Schema.Types.ObjectId,
           ref: "Producto",
-          required: true
+          required: true,
         },
         monto: {
           type: Number,
           required: true,
           default: 1,
         },
+        cantidad: {
+          type: Number,
+          required: true,
+        },
       },
     ],
+    total: { type: Number }
   },
   {
     timestamps: true,

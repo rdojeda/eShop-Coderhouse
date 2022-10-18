@@ -1,6 +1,5 @@
 const bcryptjs = require('bcryptjs');
-const emailer = require('../helpers/emailer');
-
+const emailer = require('../emailer/emailerUsuario');
 
 const Usuario = require('../models/usuario');
 
@@ -36,7 +35,7 @@ const usuariosPost = async(req, res) => {
     // Guardar en BD
     await usuario.save();
     //Enviar correo 
-    emailer.sendMailUsuario(usuario);
+    emailer.sendMail(usuario);
 
     res.json({
         usuario
